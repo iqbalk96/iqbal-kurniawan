@@ -37,7 +37,7 @@ To run the website locally, follow these steps:
 
 ```bash
 git clone https://github.com/iqbalk96/iqbal-kurniawan.git
-cd ronit.io
+cd iqbal-kurniawan
 ```
 
 2. **Install dependencies:**
