@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 interface ReCaptchaDialogProps {
   onVerified: () => void;
@@ -10,28 +9,9 @@ interface ReCaptchaDialogProps {
   buttonClassName?: string;
 }
 
-export function ReCaptchaDialog({
-  onVerified,
-  triggerButtonText,
-  buttonClassName = '',
-}: ReCaptchaDialogProps) {
+export function ReCaptchaDialog({ triggerButtonText, buttonClassName = '' }: ReCaptchaDialogProps) {
   const [isCaptchaVisible, setIsCaptchaVisible] = useState(false);
-  const [captchaError, setCaptchaError] = useState<string | null>(null);
   const captchaContainerRef = useRef<HTMLDivElement>(null);
-
-  const googleReCaptchaKey = process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY;
-
-  const handleCaptchaChange = (value: string | null) => {
-    if (value) {
-      onVerified();
-      setIsCaptchaVisible(false);
-    }
-    setCaptchaError(null);
-  };
-
-  const handleCaptchaError = () => {
-    setCaptchaError('Failed to load CAPTCHA. Please refresh the page.');
-  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -58,23 +38,15 @@ export function ReCaptchaDialog({
       <Button
         variant="default"
         className={buttonClassName}
-        onClick={() => setIsCaptchaVisible(true)}
+        onClick={() => {
+          const phoneNumber = '6281223043453'; // WhatsApp requires the international format (62 for Indonesia)
+          const message = encodeURIComponent('Halo, saya tertarik untuk membuat website.\nBisakah Anda membantu saya dengan informasi lebih lanjut?');
+          const url = `https://wa.me/${phoneNumber}?text=${message}`;
+          window.open(url, '_blank');
+        }}
       >
         {triggerButtonText}
       </Button>
-      {isCaptchaVisible && (
-        <div ref={captchaContainerRef} className="absolute mt-2 left-0">
-          <div className="flex justify-center recaptcha-container">
-            <ReCAPTCHA
-              sitekey={googleReCaptchaKey || ''}
-              onChange={handleCaptchaChange}
-              onError={handleCaptchaError}
-              className="z-auto"
-            />
-          </div>
-          {captchaError && <p className="text-red-500 text-sm text-center">{captchaError}</p>}
-        </div>
-      )}
     </div>
   );
 }
