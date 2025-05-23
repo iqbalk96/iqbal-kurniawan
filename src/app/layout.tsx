@@ -16,11 +16,11 @@ export const metadata: Metadata = {
     title: 'Iqbal Kurniawan - Web Developer',
     description:
       'Web and Mobile Developer based in Tangerang, Indonesia, specializing in React, Vue, React Native, and TypeScript. Passionate about frontend development, responsive design, and building cool things with code.',
-    url: 'https://github.com/iqbalk96/sukangopi.dev',
+    url: 'https://iqbal-kurniawan.vercel.app/',
     siteName: 'M Iqbal Kurniawan',
     images: [
       {
-        url: 'https://github.com/iqbalk96/sukangopi.dev/iqbal-kurniawan.png',
+        url: 'https://ibengberbagi.wordpress.com/wp-content/uploads/2025/05/iqbal-kurniawan.png',
         width: 1200,
         height: 630,
         alt: 'M Iqbal Kurniawan',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: 'M Iqbal Kurniawan',
     description:
       'Web and Mobile Developer based in Tangerang, Indonesia, specializing in React, Vue, React Native, and TypeScript. Passionate about frontend development, responsive design, and building cool things with code.',
-    images: ['https://github.com/iqbalk96/sukangopi.dev/sukangopi.png'],
+    images: ['https://ibengberbagi.wordpress.com/wp-content/uploads/2025/05/iqbal-kurniawan.png'],
   },
 };
 
