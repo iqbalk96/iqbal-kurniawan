@@ -45,6 +45,7 @@ interface TimelineContainerProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  isMobile: boolean;
 }
 
 // --- Data ---
@@ -177,7 +178,12 @@ const Popup: React.FC<PopupProps> = ({ title, description }) => (
   </div>
 );
 
-const TimelineContainer: React.FC<TimelineContainerProps> = ({ isOpen, onClose, children }) => (
+const TimelineContainer: React.FC<TimelineContainerProps> = ({
+  isOpen,
+  onClose,
+  children,
+  isMobile,
+}) => (
   <div
     className={`
         absolute top-0 left-0
@@ -195,13 +201,15 @@ const TimelineContainer: React.FC<TimelineContainerProps> = ({ isOpen, onClose, 
   >
     <div className="flex-none flex items-center justify-between p-4 border-b-4 border-black dark:border-darkBorder bg-white dark:bg-darkBg">
       <h2 className="font-black text-xl text-black dark:text-white">Journey Timeline</h2>
-      <button
-        onClick={onClose}
-        className="p-2 bg-black dark:bg-darkBg text-white dark:text-darkText hover:bg-gray-800 dark:hover:bg-black transition-colors rounded md:hidden" // Hide close button on desktop
-        aria-label="Close timeline"
-      >
-        <ChevronLeft size={24} />
-      </button>
+      {!isMobile && (
+        <button
+          onClick={onClose}
+          className="p-2 bg-black dark:bg-darkBg text-white dark:text-darkText hover:bg-gray-800 dark:hover:bg-black transition-colors rounded md:hidden" // Hide close button on desktop
+          aria-label="Close timeline"
+        >
+          <ChevronLeft size={24} />
+        </button>
+      )}
     </div>
     {/* Scrollable area with continuous vertical line */}
     <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar relative">{children}</div>
@@ -237,7 +245,7 @@ const MapComponent: React.FC = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       // Close timeline by default on mobile, open on desktop
-      setIsTimelineOpen(!mobile);
+      setIsTimelineOpen(true);
     };
 
     checkSize(); // Initial check
@@ -452,10 +460,11 @@ const MapComponent: React.FC = () => {
   const handleTimelineClick = (index: number, image: string) => {
     setActiveIndex(index); // Set the clicked item as active
     setActiveImage(image);
+
     // Close timeline automatically on mobile after selection
-    if (isMobile) {
-      setIsTimelineOpen(false);
-    }
+    // if (isMobile) {
+    //   setIsTimelineOpen(false);
+    // }
   };
 
   const toggleTimeline = () => {
@@ -489,7 +498,7 @@ const MapComponent: React.FC = () => {
         <div ref={mapRef} className="w-full h-full flex" aria-label="Interactive Journey Map">
           {/* Left Section - Timeline Sidebar */}
           <div className="w-full max-w-xs border-r border-black overflow-y-auto">
-            <TimelineContainer isOpen={isTimelineOpen} onClose={toggleTimeline}>
+            <TimelineContainer isOpen={isTimelineOpen} onClose={toggleTimeline} isMobile={isMobile}>
               {timelineData.map((entry, index) => (
                 <TimelineItem
                   key={entry.id}
